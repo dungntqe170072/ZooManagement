@@ -29,7 +29,7 @@ public abstract class DAO<T> implements IDAO<T> {
      public abstract void delete(T t);
 
      public void save() {
-          if (fileName == null || fileName.equals("") || fileName.matches("\\.(dat|DAT)")) {
+          if (fileName == null || fileName.length() == 0 || !fileName.matches("^.{1,10}\\.(dat|DAT|txt)$")) {
                throw new RuntimeException("File name is invalid!");
           }
           File file = new File("Database", fileName);
@@ -54,7 +54,7 @@ public abstract class DAO<T> implements IDAO<T> {
      }
 
      public void load() {
-          if (fileName == null || fileName.equals("") || fileName.matches("\\.(dat|DAT)")) {
+          if (fileName == null || fileName.length() == 0 || !fileName.matches("^.{1,10}\\.(dat|DAT|txt)$")) {
                throw new RuntimeException("File name is invalid!");
           }
           File file = new File("Database", fileName);
