@@ -1,5 +1,6 @@
 package Controllers;
 
+import Views.Confirm;
 import Views.Form;
 import Views.Messager;
 import Views.Page;
@@ -27,8 +28,7 @@ public class SearchPage extends PageController {
                                              .addLabel("Name", "", p -> p.length() != 0));
                          page.display();
                          String name = page.getArgs().get("Name");
-                         page.reset().addComponents(new Table<>("Animal", zoo.searchByName(name)));
-                         page.display();
+                         new Table<>("Animal", zoo.searchByName(name)).display();
                          break;
 
                     case 2:
@@ -46,7 +46,10 @@ public class SearchPage extends PageController {
                          break;
 
                     case 3:
-                         selection = -1;
+                         if (new Confirm("Do you want to go back?", "Go back")
+                                   .display()
+                                   .getSelection() == 1)
+                              selection = -1;
                          break;
 
                     default:
