@@ -64,11 +64,12 @@ public class Page implements IInputComponent, IOutputComponent {
                     }
                     System.out.print("Plese enter the selection:");
                     selection = sc.nextInt();
-                    sc.nextLine();
                } catch (InputMismatchException inputExceptions) {
-                    System.err.println("Your input were wrong!");
+                    throw new RuntimeException("Your input were wrong!");
                } catch (NoSuchElementException | IllegalStateException systemException) {
                     System.err.println("\nCan't input selection by " + systemException.getMessage());
+               } finally {
+                    sc.nextLine();
                }
           }
           System.out.println("======================");
