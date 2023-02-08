@@ -1,8 +1,7 @@
 package Controllers;
 
-import java.util.List;
-
-import Models.TransferObjects.Animal;
+import Views.Confirm;
+import Views.Form;
 import Views.Messager;
 import Views.Page;
 import Views.Table;
@@ -23,34 +22,52 @@ public class ShowPage extends PageController {
           try {
                switch (selection) {
                     case 1:
-                         page = new Page();
-                         zoo.getTypes().forEach(
-                                   type -> {
-                                        List<Animal> temp = zoo.showByType(type);
-                                        if (temp.size() > 0)
-                                             page.addComponents(new Table<Animal>(type.getKey(), zoo.showByType(type)));
-                                   });
-                         page.display();
+                         page = new Page()
+                                   .addComponents(new Table<>("Type", zoo.getTypes()))
+                                   .addComponents(new Form()
+                                             .addLabel(
+                                                       "Type",
+                                                       "(0 - " + (zoo.getTypes().size() - 1) + ")",
+                                                       p -> !p.isEmpty()
+                                                                 && p.matches("^\\d+$")
+                                                                 && Integer.parseInt(p) < zoo.getTypes().size()));
+                         component = new Table<>(
+                                   "Animal",
+                                   zoo.showByType(
+                                             zoo.getTypes().get(
+                                                       Integer.parseInt(
+                                                                 page.display()
+                                                                           .getArgs()
+                                                                           .get("Type")))));
+                         component.display();
+                         if (new Confirm("Do you want to continue?", "Continue")
+                                   .display()
+                                   .getSelection() == 2)
+                              selection = null;
                          break;
 
                     case 2:
                          page = new Page()
                                    .addComponents(new Table<>("Animal", zoo.showAll()));
                          page.display();
+                         selection = null;
                          break;
 
                     case 3:
-                         selection = -1;
+                         if (new Confirm("Do you want to go back?", "Go back")
+                                   .display()
+                                   .getSelection() == 1)
+                              selection = -1;
                          break;
 
                     default:
+                         component = new Messager("Error", "Don't have this slection!");
+                         component.display();
                          break;
                }
           } catch (RuntimeException runtimeException) {
                component = new Messager("", runtimeException.getMessage());
                component.display();
-          } finally {
-               selection = selection == -1 ? -1 : null;
           }
      }
 }
