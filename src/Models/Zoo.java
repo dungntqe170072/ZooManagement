@@ -49,13 +49,17 @@ public class Zoo {
      public List<Animal> searchByName(String name) {
           if (name == null || name.length() == 0)
                return animals.getAll();
-          return animals.get(p -> p.getName().contains(name))
+          return animals.get(
+                    p -> p.getName()
+                              .toLowerCase()
+                              .contains(
+                                        name.toLowerCase()))
                     .collect(Collectors.toList());
      }
 
      public List<Animal> searchByWeight(Double lowerBound, Double upperBound) {
           if (lowerBound > upperBound)
-               throw new RuntimeException("Invalid input");
+               throw new RuntimeException("Lower must lower than upper");
 
           return animals.get((p) -> {
                for (Property property : p.getProperties()) {
