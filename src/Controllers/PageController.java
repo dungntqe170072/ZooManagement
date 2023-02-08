@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Zoo;
+import Views.Messager;
 import Views.Page;
 
 public abstract class PageController implements IControllers {
@@ -20,11 +21,15 @@ public abstract class PageController implements IControllers {
      @Override
      public void run() {
           while (true) {
-               if (selection == null) {
-                    page.display();
-                    selection = page.getSelection();
+               try {
+                    if (selection == null) {
+                         page.display();
+                         selection = page.getSelection();
+                    }
+                    excuted();
+               } catch (RuntimeException runtime) {
+                    new Messager("Error", runtime.getMessage()).display();
                }
-               excuted();
                if (selection != null && selection == -1) {
                     break;
                }
