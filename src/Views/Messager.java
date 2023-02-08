@@ -16,9 +16,10 @@ public class Messager implements IComponent {
 
      @Override
      public Messager display() {
-          if (type != null || type.length() > 0 || message != null || message.length() > 0) {
-               System.out.println(type + " " + message);
-          }
+          if (type != null && !type.isEmpty())
+               System.out.println(type.toUpperCase());
+          if (message != null && !message.isEmpty())
+               System.out.println(message);
           return this;
      }
 }
