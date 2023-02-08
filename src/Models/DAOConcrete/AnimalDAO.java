@@ -11,7 +11,7 @@ import Models.TransferObjects.Animal;
 
 public class AnimalDAO extends DAO<Animal> {
      public AnimalDAO() {
-          fileName = "Animals.dat";
+          fileName = "Animals.txt";
           load();
           if (t == null) {
                t = new ArrayList<>();
